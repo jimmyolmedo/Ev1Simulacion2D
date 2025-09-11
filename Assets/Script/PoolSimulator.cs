@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class PoolSimulator : MonoBehaviour
 {
+    public bool aiming;
+    public Vector2 aimStartWorld;
+    public Vector2 aimCurrentWorld;
+
+    public float shotPower;
+
+    public float maxShotSpeed = 30;
+
+
+
+
+    [SerializeField] Ball whiteBall;
 
     public List<Ball> balls = new List<Ball>();
     public float friction = 0.99f;
@@ -11,6 +23,8 @@ public class PoolSimulator : MonoBehaviour
 
     void Update()
     {
+        HandleInput();
+
         float dt = Time.deltaTime;
 
         // Mover bolas
@@ -67,5 +81,41 @@ public class PoolSimulator : MonoBehaviour
         {
             b.transform.position = b.position;
         }
+    }
+
+    void HandleInput()
+    {
+        Vector2 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Solo si clic cerca de la blanca y está casi quieta
+            if ((mouseWorld - whiteBall.position).sqrMagnitude <= (whiteBall.radius * 20f) * (whiteBall.radius * 20f)
+                && whiteBall.velocity.sqrMagnitude < 0.0001f)
+            {
+                aiming = true;
+                aimStartWorld = mouseWorld;
+                aimCurrentWorld = mouseWorld;
+            }
+        }
+        if (aiming)
+        {
+            aimCurrentWorld = mouseWorld;
+            if (Input.GetMouseButtonUp(0))
+            {
+                Vector2 dir = (aimCurrentWorld - aimStartWorld);
+                Vector2 v = dir * shotPower;
+                if (v.magnitude > maxShotSpeed) v = v.normalized * maxShotSpeed;
+                whiteBall.velocity = v;
+                aiming = false;
+            }
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawLine(aimStartWorld, aimCurrentWorld);
     }
 }
