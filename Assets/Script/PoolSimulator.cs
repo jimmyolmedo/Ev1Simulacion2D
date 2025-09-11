@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class PoolSimulator : MonoBehaviour
@@ -13,12 +12,13 @@ public class PoolSimulator : MonoBehaviour
 
     public float maxShotSpeed = 30;
 
-
-
+    public TMPro.TMP_Text magnitudeText;
 
     [SerializeField] Ball whiteBall;
 
     public List<Ball> balls = new();
+
+    public List<GameObject> walls = new();
     public float friction = 0.99f;
     public SpriteRenderer poolTable;
 
@@ -34,6 +34,7 @@ public class PoolSimulator : MonoBehaviour
 
         StepPhysics(dt);
         SyncTransforms();
+        magnitudeText.text = whiteBall.velocity.magnitude.ToString();
     }
 
     void StepPhysics(float dt)
@@ -52,7 +53,7 @@ public class PoolSimulator : MonoBehaviour
                 Ball A = balls[i];
                 Ball B = balls[j];
                 ResolveBallCollision(A, B);
-                ResolveWallColission(B);
+                ResolveWallColission(A);
             }
         }
     }
@@ -92,9 +93,12 @@ public class PoolSimulator : MonoBehaviour
 
     void ResolveWallColission(Ball b)
     {
-        for (int i = 0; i < balls.Count; i++)
+            for (int j = 0; j < walls.Count; j++)
         {
-            
+            if (Vector2.Distance(b.transform.position, walls[j].transform.position) <= b.radius)
+            {
+                Debug.Log("Collision");
+            }
         }
     }
 
@@ -113,7 +117,7 @@ public class PoolSimulator : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // Solo si clic cerca de la blanca y está casi quieta
-            if ((mouseWorld - whiteBall.position).sqrMagnitude <= (whiteBall.radius * 20f) * (whiteBall.radius * 20f)
+            if ((mouseWorld - whiteBall.position).sqrMagnitude <= (whiteBall.radius * 5f) * (whiteBall.radius * 5f)
                 && whiteBall.velocity.sqrMagnitude < 0.0001f)
             {
                 aiming = true;
