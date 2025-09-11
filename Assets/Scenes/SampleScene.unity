@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
-  velocity: {x: 20, y: 0}
+  velocity: {x: 0, y: 0}
   radius: 0.25
   VisualReference: {fileID: 0}
 --- !u!212 &104039431
@@ -1929,6 +1929,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d67b34d86020547992b54b0a473a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aiming: 0
+  aimStartWorld: {x: 0, y: 0}
+  aimCurrentWorld: {x: 0, y: 0}
+  shotPower: 0
+  maxShotSpeed: 30
+  whiteBall: {fileID: 104039430}
   balls:
   - {fileID: 104039430}
   - {fileID: 1175110753}
