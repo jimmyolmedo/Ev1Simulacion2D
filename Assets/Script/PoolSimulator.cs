@@ -13,18 +13,15 @@ public class PoolSimulator : MonoBehaviour
 
     public float maxShotSpeed = 30;
 
-
-
-
     [SerializeField] Ball whiteBall;
 
     public List<Ball> balls = new();
-    public float friction = 0.99f;
-    public SpriteRenderer poolTable;
+    public List<Vector2> wallsBounds = new();
+    public const float friction = 0.99f;
 
     void Start()
     {
-
+        //r=d-2(d*n)n
     }
 
     void Update()
@@ -43,7 +40,6 @@ public class PoolSimulator : MonoBehaviour
         {
             b.position += b.velocity * dt;
             b.velocity *= friction;
-
         }
         for (int i = 0; i < balls.Count; i++)
         {
