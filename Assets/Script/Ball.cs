@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class Ball : MonoBehaviour
 {
     public Vector2 position;
@@ -9,7 +10,11 @@ public class Ball : MonoBehaviour
 
     void Awake()
     {
-        VisualReference = this.transform;
-        position = new Vector2(transform.position.x, transform.position.y);
+        VisualReference = transform;
+        position = transform.position;
+        if (!transform.CompareTag("WhiteBall"))
+        {
+            GetComponent<SpriteRenderer>().color = Random.ColorHSV();
+        }
     }
 }

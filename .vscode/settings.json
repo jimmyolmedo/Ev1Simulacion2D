@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "ev1simulacion2d.sln"
+    "dotnet.defaultSolution": "Ev1Simulacion2D.sln"
 }
