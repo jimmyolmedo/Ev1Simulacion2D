@@ -18,7 +18,8 @@ public class PoolSimulator : MonoBehaviour
 
     public List<Ball> balls = new();
 
-    public List<GameObject> walls = new();
+    public List<BoxCollision> walls = new();
+    [SerializeField] float bounceFactor = 0.8f;
     public float friction = 0.99f;
     public SpriteRenderer poolTable;
 
@@ -93,11 +94,17 @@ public class PoolSimulator : MonoBehaviour
 
     void ResolveWallColission(Ball b)
     {
-            for (int j = 0; j < walls.Count; j++)
+        for (int j = 0; j < walls.Count; j++)
         {
-            if (Vector2.Distance(b.transform.position, walls[j].transform.position) <= b.radius)
+            if (walls[j].CheckCollision(b.gameObject.transform.position) == true)
             {
-                Debug.Log("Collision");
+                Vector2 d = b.transform.position;
+                Vector2 n = walls[j].transform.position;
+                n.Normalize();
+                float dot = Vector2.Dot(d, n);
+                Vector2 result = d -2f * dot * n;
+                b.velocity = result * bounceFactor;
+                Debug.Log("he colisionado");
             }
         }
     }
