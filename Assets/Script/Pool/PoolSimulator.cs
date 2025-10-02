@@ -67,7 +67,7 @@ public class PoolSimulator : MonoBehaviour
             float dist = diff.magnitude;
             float minDist = a.radius + b.radius;
 
-            if (dist < minDist) // hay colisi�n
+            if (dist < minDist)
             {
                 Vector2 normal = diff.normalized;
                 Vector2 tangent = new(-normal.y, normal.x);
@@ -84,7 +84,7 @@ public class PoolSimulator : MonoBehaviour
                 a.velocity = tangent * dpTanA + normal * newNormA;
                 b.velocity = tangent * dpTanB + normal * newNormB;
 
-                // Separar para evitar solapamiento
+               
                 float overlap = 0.5f * (minDist - dist);
                 a.position -= normal * overlap;
                 b.position += normal * overlap;
